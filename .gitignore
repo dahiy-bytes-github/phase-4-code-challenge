@@ -1,0 +1,41 @@
+# Ignore system files
+*.zip
+.DS_Store
+
+# React/Nx-specific
+node_modules/
+jspm_packages/
+.npm
+.node_repl_history
+.turbo/
+dist/
+build/
+.next/
+coverage/
+
+# Python/Pipenv-specific
+.venv/
+env/
+venv/
+.pytest_cache/
+__pycache__/
+*.pyc
+migrations/
+instance/
+*.db
+*/*.db
+
+# IDEs and Editors
+.vscode/
+
+# Logs and temp files
+/log/
+!/log/.keep
+/tmp/
+!/tmp/.keep
+/tmp/pids/
+!/tmp/pids/.keep
+.byebug_history
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
