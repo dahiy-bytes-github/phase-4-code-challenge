@@ -52,5 +52,27 @@ def get_pizzas():
     pizzas = Pizza.query.all()
     return jsonify([pizza.to_dict(only=("id", "name", "ingredients")) for pizza in pizzas])
 
+@app.route('/restaurant_pizzas', methods=['POST'])
+def create_restaurant_pizza():
+    data = request.get_json()
+    
+    price = data.get('price')
+    pizza_id = data.get('pizza_id')
+    restaurant_id = data.get('restaurant_id')
+
+    # Validation for price
+    if price < 1 or price > 30:
+        return jsonify({"errors": ["validation errors"]}), 400  # Match test expectation
+    
+    # Create new RestaurantPizza
+    restaurant_pizza = RestaurantPizza(price=price, pizza_id=pizza_id, restaurant_id=restaurant_id)
+    
+    try:
+        db.session.add(restaurant_pizza)
+        db.session.commit()
+        return jsonify(restaurant_pizza.to_dict()), 201  # Success
+    except Exception as e:
+        return jsonify({"errors": ["validation errors"]}), 400  # Match test expectation
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
