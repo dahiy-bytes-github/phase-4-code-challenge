@@ -36,5 +36,17 @@ def get_restaurant(id):
         return jsonify(restaurant.to_dict(only=("id", "name", "address", "restaurant_pizzas")))
     return jsonify({"error": "Restaurant not found"}), 404
 
+@app.route('/restaurants/<int:id>', methods=['DELETE'])
+def delete_restaurant(id):
+    restaurant = Restaurant.query.get(id)
+    if restaurant:
+        # Delete associated restaurant_pizzas first (if cascade delete isn't set up)
+        RestaurantPizza.query.filter_by(restaurant_id=id).delete()
+        db.session.delete(restaurant)
+        db.session.commit()
+        return '', 204  # No content on successful delete
+    return jsonify({"error": "Restaurant not found"}), 404
+
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
