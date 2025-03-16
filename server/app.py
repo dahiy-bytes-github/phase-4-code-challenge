@@ -29,6 +29,12 @@ def get_restaurants():
     restaurants = Restaurant.query.all()
     return jsonify([restaurant.to_dict(only=("id", "name", "address")) for restaurant in restaurants])
 
+@app.route('/restaurants/<int:id>', methods=['GET'])
+def get_restaurant(id):
+    restaurant = Restaurant.query.get(id)
+    if restaurant:
+        return jsonify(restaurant.to_dict(only=("id", "name", "address", "restaurant_pizzas")))
+    return jsonify({"error": "Restaurant not found"}), 404
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
